@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import MongoStore from 'connect-mongo'
 import userRoutes from './Routes/userRoutes.js'
+import productRoutes from './Routes/productRoutes.js'
 import session from 'express-session'
 dotenv.config()
 
@@ -31,6 +32,7 @@ app.use((req, res, next) => {
 
 
 app.use(userRoutes)
+app.use(productRoutes)
 
 mongoose.connect(process.env.dburi).then(() => {
     app.listen((process.env.port), () => {
