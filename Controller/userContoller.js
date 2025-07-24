@@ -1,5 +1,4 @@
 
-import session from "express-session";
 import userDetails from "../models/userModel.js";
 import bcrypt from 'bcrypt';
 
@@ -17,6 +16,7 @@ export const register = async (req, res) => {
         email: email,
         password: hashedPass,
         image: p
+        
     })
     await user.save()
     res.json({ message: "User registered successfully" })
