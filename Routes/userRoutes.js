@@ -5,6 +5,7 @@ import path from 'path'
 const router = express.Router();
 
 import { register, Login, Logout, EditUser } from '../Controller/userContoller.js'
+import { oneCategory,showCategory} from '../Controller/categoryController.js';
 
 
 const storage = multer.diskStorage({
@@ -22,6 +23,8 @@ const upload = multer({ storage: storage });
 
 router.post('/Login', Login)
 router.post('/register', upload.single('image'), register)
+router.get('/category',showCategory)
+router.get('/category/:id',oneCategory)
 
 router.use((req, res, next) => {
     if (req.session.user) {
@@ -32,7 +35,6 @@ router.use((req, res, next) => {
     }
 
 })
-
 router.put('/Edit/:id', upload.single('image'), EditUser)
 router.get('/Logout', Logout)
 
