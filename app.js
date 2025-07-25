@@ -11,7 +11,7 @@ const app = express();
 
 app.use(express.json())
 app.use(express.static("Uploads"))
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: true }));
 
 app.use(session(
     {
@@ -31,8 +31,8 @@ app.use((req, res, next) => {
 })
 
 
-app.use(userRoutes)
-app.use(adminRoutes)
+app.use("/user",userRoutes)
+app.use("/admin",adminRoutes)
 
 mongoose.connect(process.env.dburi).then(() => {
     app.listen((process.env.port), () => {

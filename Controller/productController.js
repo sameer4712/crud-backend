@@ -2,17 +2,19 @@ import productDetails from "../models/productModel.js";
 
 // Add product
 export const addProduct = async (req, res) => {
-    let p = ""
+    let F = ""
     if (req.file) {
-        p = req.file.filename
+        F = req.file.filename
     }
-    const { Name,Description,Stock,Category,Price} = req.body;
+    const { name, description, stock, category, price } = req.body;
+    console.log(req.body)
     const product = new productDetails({
-        name: Name,
-        description: Description,
-        stock:Stock,
-        category: Category,
-        price:Price
+        name: name,
+        description: description,
+        stock: stock,
+        category: category,
+        price: price,
+        image:F
     })
     await product.save()
     res.json({ message: "Product added succesfully" })

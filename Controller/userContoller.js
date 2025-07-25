@@ -90,12 +90,10 @@ export const EditUser = async (req, res) => {
 
 // Logout 
 export const Logout = (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            res.json("failed")
-        }
-        else {
-            res.json("Logout success")
-        }
-    })
+    req.session.user=null;
+    if(req.session.user==null)
+    {
+        res.json("Logout as user")
+    }
+    res.json("Failed")
 } 
