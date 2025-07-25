@@ -18,6 +18,4 @@ export const addProduct = async (req, res) => {
     })
     await product.save()
     res.json({ message: "Product added succesfully" })
-
-    
 }
