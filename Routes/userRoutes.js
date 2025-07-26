@@ -6,6 +6,7 @@ const router = express.Router();
 
 import { register, Login, Logout, EditUser } from '../Controller/userContoller.js'
 import { oneCategory,showCategory} from '../Controller/categoryController.js';
+import { showProduct } from '../Controller/productController.js';
 
 
 const storage = multer.diskStorage({
@@ -25,6 +26,7 @@ router.post('/Login', Login)
 router.post('/register', upload.single('image'), register)
 router.get('/category',showCategory)
 router.get('/category/:id',oneCategory)
+router.get('/products',showProduct)
 
 router.use((req, res, next) => {
     if (req.session.user) {
@@ -33,9 +35,11 @@ router.use((req, res, next) => {
     else {
         res.json({ message: "You are not Logged in" })
     }
-
 })
+
 router.put('/Edit/:id', upload.single('image'), EditUser)
 router.get('/Logout', Logout)
+
+
 
 export default router

@@ -17,5 +17,16 @@ export const addProduct = async (req, res) => {
         image:F
     })
     await product.save()
-    res.json({ message: "Product added succesfully" })
+    res.json({ message: "Product added succesfully",product:name })
 }
+
+export const showProduct = async(req,res)=>{
+    const products=await productDetails.find()
+    res.json(products)
+}
+
+// export const deleteProduct = async(req,res)=>{
+//     const id = req.params.id
+//     const 
+
+// }
