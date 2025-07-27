@@ -12,6 +12,18 @@ export const category = async (req, res) => {
 }
 
 
+export const showCategory = async (req, res) => {
+    const show = await CategoryDetails.find()
+    res.json({ message: "All category are", category: show })
+}
+
+
+export const oneCategory = async (req, res) => {
+    const id = req.params.id
+    const show = await CategoryDetails.findById({ _id: id })
+    res.json({ message: "The selected category is", category: show })
+}
+
 export const editCategory = async (req, res) => {
     const id = req.params.id;
     const { name, description } = req.body
@@ -27,7 +39,7 @@ export const editCategory = async (req, res) => {
         newCategory.name = req.body.name
     }
     if (req.body.description) {
-        Category.description = req.body.description
+        newCategory.description = req.body.description
     }
     const updatedCategory = await CategoryDetails.findByIdAndUpdate(id, newCategory)
     res.json({ message: "Category updated Successfull", category: updatedCategory })
@@ -37,23 +49,13 @@ export const editCategory = async (req, res) => {
 export const deleteCategory = async (req, res) => {
     try {
         const categoryId = req.params.id
-            await productDetails.deleteMany({ category: categoryId })
-            await CategoryDetails.deleteOne({ _id: categoryId })
-            return res.json({ message: "Category and all the products in the category is deleted succesfully",category:name })
-        }
-    catch(err) {
-        res.json({message:"There is no such category"})
+        await productDetails.deleteMany({ category: categoryId })
+        await CategoryDetails.deleteOne({ _id: categoryId })
+        return res.json({ message: "Category and all the products in the category is deleted succesfully", category: name })
+    }
+    catch (err) {
+        res.json({ message: "There is no such category" })
     }
 }
 
-export const oneCategory = async (req, res) => {
-    const id = req.params.id
-    const show = await CategoryDetails.findById({ _id: id })
-    res.json({ message: "The selected category is", category: show })
-}
-
-export const showCategory = async (req, res) => {
-    const show = await CategoryDetails.find()
-    res.json({ message: "All category are", category: show })
-}
 

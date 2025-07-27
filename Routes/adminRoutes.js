@@ -4,7 +4,7 @@ import path from 'path'
 
 const router = express.Router()
 import { adminLogin, adminLogout } from '../Controller/admin.js'
-import { addProduct } from '../Controller/productController.js'
+import { addProduct,deleteProduct,EditProduct } from '../Controller/productController.js'
 import { category,deleteCategory,editCategory,showCategory,oneCategory } from '../Controller/categoryController.js'
 
 const storage = multer.diskStorage({
@@ -29,12 +29,17 @@ router.use((req, res, next) => {
     }
 
 })
+// CATEGORY
 router.get('/category',showCategory)
 router.get('/category/:id',oneCategory)
 router.post('/AddCategory',category)
 router.delete('/deleteCategory/:id',deleteCategory)
 router.put('/editCategory/:id',editCategory)
+
+// PRODUCT
 router.post('/AddProduct',pro.single('image'),addProduct)
+router.put('/updateProduct/:id',pro.single('image'),EditProduct)
+router.delete('/deleteProduct/:id',deleteProduct)
 router.get('/Logout', adminLogout)
 
 

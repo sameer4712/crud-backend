@@ -6,7 +6,7 @@ const router = express.Router();
 
 import { register, Login, Logout, EditUser } from '../Controller/userContoller.js'
 import { oneCategory,showCategory} from '../Controller/categoryController.js';
-import { showProduct } from '../Controller/productController.js';
+import { showProduct,OneProduct } from '../Controller/productController.js';
 
 
 const storage = multer.diskStorage({
@@ -27,6 +27,7 @@ router.post('/register', upload.single('image'), register)
 router.get('/category',showCategory)
 router.get('/category/:id',oneCategory)
 router.get('/products',showProduct)
+router.get('/product/:id',OneProduct)
 
 router.use((req, res, next) => {
     if (req.session.user) {

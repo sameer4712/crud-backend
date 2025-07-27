@@ -80,7 +80,7 @@ export const EditUser = async (req, res) => {
         }
 
         const userUpdate = await userDetails.findByIdAndUpdate(userId, UpdateData)
-        res.json("Updated successfully")
+        res.json({message:"Updated successfully",userId:userUpdate})
 
     }
     catch (err) {
