@@ -1,6 +1,7 @@
 import CategoryDetails from "../models/categoryModel.js";
 import productDetails from "../models/productModel.js";
 
+// Add a category
 export const category = async (req, res) => {
     const { name, description } = req.body
     const addCategory = new CategoryDetails({
@@ -11,19 +12,20 @@ export const category = async (req, res) => {
     res.json("Category added successfully")
 }
 
-
+// Show all category
 export const showCategory = async (req, res) => {
     const show = await CategoryDetails.find()
     res.json({ message: "All category are", category: show })
 }
 
-
+// Show one category
 export const oneCategory = async (req, res) => {
     const id = req.params.id
     const show = await CategoryDetails.findById({ _id: id })
     res.json({ message: "The selected category is", category: show })
 }
 
+// edit category
 export const editCategory = async (req, res) => {
     const id = req.params.id;
     const { name, description } = req.body
@@ -45,7 +47,7 @@ export const editCategory = async (req, res) => {
     res.json({ message: "Category updated Successfull", category: updatedCategory })
 }
 
-
+// Delete category
 export const deleteCategory = async (req, res) => {
     try {
         const categoryId = req.params.id

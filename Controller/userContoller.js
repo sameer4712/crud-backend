@@ -50,7 +50,7 @@ export const Login = async (req, res) => {
         console.log(err)
     }
 }
-
+// Edit user
 export const EditUser = async (req, res) => {
     try {
         console.log(req.body);

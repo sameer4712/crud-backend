@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 })
 const pro = multer({ storage: storage });
 
-router.post('/login', adminLogin)
+router.post('/login', adminLogin) 
 
 router.use((req, res, next) => {
     if (req.session.admin) {
@@ -29,9 +29,11 @@ router.use((req, res, next) => {
     }
 
 })
+
 // CATEGORY
-router.get('/category',showCategory)
-router.get('/category/:id',oneCategory)
+// router.get('/category',showCategory)
+// router.get('/category/:id',oneCategory)
+
 router.post('/AddCategory',category)
 router.delete('/deleteCategory/:id',deleteCategory)
 router.put('/editCategory/:id',editCategory)

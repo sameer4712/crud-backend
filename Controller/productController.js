@@ -21,11 +21,13 @@ export const addProduct = async (req, res) => {
     res.json({ message: "Product added succesfully", product: name })
 }
 
+// Show All products
 export const showProduct = async (req, res) => {
     const products = await productDetails.find()
     res.json(products)
 }
 
+// Show one product
 export const OneProduct = async (req, res) => {
     try {
         const Id = req.params.id
@@ -39,6 +41,7 @@ export const OneProduct = async (req, res) => {
 
 }
 
+// Edit A product
 export const EditProduct = async (req, res) => {
     try {
         const id = req.params.id;
@@ -81,7 +84,7 @@ export const EditProduct = async (req, res) => {
     }
 }
 
-
+// Delete a product
 export const deleteProduct = async (req, res) => {
     try {
         const id = req.params.id
