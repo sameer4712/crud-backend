@@ -20,7 +20,7 @@ export const adminLogin = async (req, res) => {
     }
     if (hashed) {
         req.session.admin = adminFound;
-        res.json({ message: "you loggedIn as admin" })
+        res.json({ message: "you loggedIn as admin",adminFound })
     }
 }
 

@@ -12,7 +12,7 @@ export const addToCart = async (req, res) => {
     const newProductId = productId
     try {
         let cartExist = await cartDetails.findOne({ userId });
-        
+
         if (cartExist) {
             const indexOfExistCart = await cartExist.items.findIndex((item) => {
                 return item.productId == newProductId;
@@ -43,5 +43,86 @@ export const addToCart = async (req, res) => {
     }
     catch (err) {
         res.json({ message: err })
+    }
+}
+
+// Show the details of carts
+
+export const showCart = async (req, res) => {
+    try {
+        const id = req.session.user
+        const userId = new mongoose.Types.ObjectId(id)
+        const Cart = await cartDetails.aggregate([{
+            $facet: {
+                total: [
+                    {
+                        $match: {
+                            userId: userId
+                        },
+                    },
+                    {
+                        $unwind: "$items",
+                    },
+                    {
+                        $lookup: {
+                            from: 'products',
+                            localField: "items.productId",
+                            foreignField: "_id",
+                            as: 'productDetails'
+                        }
+                    },
+                    {
+                        $unwind: "$productDetails"
+                    },
+                    {
+                        $addFields: {
+                            subtotal: {
+                                $multiply: ["$productDetails.price", "$items.quantity"]
+                            }
+                        }
+                    },
+                    {
+                        $group: {
+                            _id: " ",
+                            total: { $sum: "$subtotal" }
+                        }
+                    }
+                ],
+                details:[
+                    {
+                        $match:{
+                            userId:userId
+                        },
+                    },
+                    {
+                        $unwind:"$items"
+                    },
+                    {
+                        $lookup:{
+                            from:"products",
+                            localField:"items.productId",
+                            foreignField:"_id",
+                            as:"productDetails"
+                        }
+                    },
+                    {
+                        $unwind:"$productDetails"
+                    },
+                    {
+                        $addFields:{
+                            subtotal:{
+                                $multiply:["$productDetails.price","$items.quantity"]
+                            }
+                        }
+                    }
+
+                ]
+            }
+        }])
+        return res.json({Cart})
+
+    }
+    catch (err) {
+        res.json(err)
     }
 }

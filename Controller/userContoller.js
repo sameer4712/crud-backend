@@ -42,7 +42,7 @@ export const Login = async (req, res) => {
                 name: check.name,
                 email: check.email,
             }
-            res.json({ message: "User Found" })
+            res.json({ message: "User Found",User:check })
         }
 
     }
