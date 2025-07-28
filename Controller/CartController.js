@@ -88,30 +88,30 @@ export const showCart = async (req, res) => {
                         }
                     }
                 ],
-                details:[
+                details: [
                     {
-                        $match:{
-                            userId:userId
+                        $match: {
+                            userId: userId
                         },
                     },
                     {
-                        $unwind:"$items"
+                        $unwind: "$items"
                     },
                     {
-                        $lookup:{
-                            from:"products",
-                            localField:"items.productId",
-                            foreignField:"_id",
-                            as:"productDetails"
+                        $lookup: {
+                            from: "products",
+                            localField: "items.productId",
+                            foreignField: "_id",
+                            as: "productDetails"
                         }
                     },
                     {
-                        $unwind:"$productDetails"
+                        $unwind: "$productDetails"
                     },
                     {
-                        $addFields:{
-                            subtotal:{
-                                $multiply:["$productDetails.price","$items.quantity"]
+                        $addFields: {
+                            subtotal: {
+                                $multiply: ["$productDetails.price", "$items.quantity"]
                             }
                         }
                     }
@@ -119,7 +119,54 @@ export const showCart = async (req, res) => {
                 ]
             }
         }])
-        return res.json({Cart})
+        return res.json({ Cart })
+
+    }
+    catch (err) {
+        res.json(err)
+    }
+}
+
+// Edit cart
+
+export const EditCart = async (req, res) => {
+    const userId = req.session.user.id;
+    const { quantity } = req.body;
+    const quan = quantity;
+    const productId = req.params.id;
+    try {
+        const newCart = await cartDetails.findOne({ userId })
+        if (newCart) {
+            const findIndex = newCart.items.findIndex((item) => {
+                return item.productId == productId
+            })
+            if (findIndex !== -1)
+                newCart.items[findIndex].quantity = quan
+            await newCart.save()
+            return res.json({ message: "Your cart has been updated..", cart: newCart })
+        }
+        else {
+            res.json({ message: "id with that product does not exist so how can you edit it " })
+        }
+    } catch (err) {
+        return res.json({ err })
+    }
+
+}
+
+// Delete a Cart
+
+export const DeleteCart = async (req, res) => {
+    try {
+        const id = req.session.id
+        const userId = id
+        const productId = req.params.id
+        const ThisCart = await cartDetails.findOne({ userId })
+        if(ThisCart){
+            const findIndex = await ThisCart.findIndex.items((item)=>{
+                return item.productId==productId
+            })
+        }
 
     }
     catch (err) {
