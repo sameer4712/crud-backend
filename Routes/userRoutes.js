@@ -7,7 +7,7 @@ const router = express.Router();
 import { register, Login, Logout, EditUser } from '../Controller/userContoller.js'
 import { oneCategory,showCategory} from '../Controller/categoryController.js';
 import { showProduct,OneProduct } from '../Controller/productController.js';
-import { addToCart,showCart,EditCart } from '../Controller/CartController.js';
+import { addToCart,showCart,EditCart,DeleteCart } from '../Controller/CartController.js';
 
 
 const storage = multer.diskStorage({
@@ -43,6 +43,7 @@ router.use((req, res, next) => {
 router.post('/cart/:id',addToCart)
 router.get('/cart',showCart)
 router.put('/editCart/:id',EditCart)
+router.delete('/deleteCart/:id',DeleteCart)
 
 
 

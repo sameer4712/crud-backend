@@ -158,14 +158,19 @@ export const EditCart = async (req, res) => {
 
 export const DeleteCart = async (req, res) => {
     try {
-        const id = req.session.id
+        const { id } = req.session.user
         const userId = id
         const productId = req.params.id
         const ThisCart = await cartDetails.findOne({ userId })
-        if(ThisCart){
-            const findIndex = await ThisCart.findIndex.items((item)=>{
-                return item.productId==productId
+        if (ThisCart) {
+            const findIndex = ThisCart.items.findIndex((item) => {
+                return item.productId == productId
             })
+            const del = ThisCart.items.splice(findIndex, 1)
+            await ThisCart.save()
+            res.json({ message: "Product deleted successfully..", deleted: del })
+        } else {
+            res.json({ message: "No cart is found for this person.." })
         }
 
     }
