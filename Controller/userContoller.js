@@ -16,10 +16,10 @@ export const register = async (req, res) => {
         email: email,
         password: hashedPass,
         image: p
-        
+
     })
     await user.save()
-    res.json({ message: "User registered successfully" })
+    res.json({ message: "User registered successfully",user:user })
 }
 
 // Login a user
@@ -42,7 +42,7 @@ export const Login = async (req, res) => {
                 name: check.name,
                 email: check.email,
             }
-            res.json({ message: "User Found",User:check })
+            res.json({ message: "User Found", User: check })
         }
 
     }
@@ -54,7 +54,7 @@ export const Login = async (req, res) => {
 export const EditUser = async (req, res) => {
     try {
         console.log(req.body);
-        
+
         const userId = req.params.id
         const oldUser = await userDetails.findById(userId)
         if (!oldUser) {
@@ -80,7 +80,7 @@ export const EditUser = async (req, res) => {
         }
 
         const userUpdate = await userDetails.findByIdAndUpdate(userId, UpdateData)
-        res.json({message:"Updated successfully",userId:userUpdate})
+        res.json({ message: "Updated successfully", userId: userUpdate })
 
     }
     catch (err) {
@@ -88,11 +88,19 @@ export const EditUser = async (req, res) => {
     }
 }
 
+// Delete user
+
+export const deleteUser = async (req, res) => {
+    const id = req.session.user.id;
+    const deleteuser = await userDetails.deleteOne({ _id: id })
+    res.json({ message: "your account has been deleted", user: deleteuser })
+
+}
+
 // Logout 
 export const Logout = (req, res) => {
-    req.session.user=null;
-    if(req.session.user==null)
-    {
+    req.session.user = null;
+    if (req.session.user == null) {
         res.json("Logout as user")
     }
     res.json("Failed")

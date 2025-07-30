@@ -6,6 +6,7 @@ const router = express.Router()
 import { adminLogin, adminLogout } from '../Controller/admin.js'
 import { addProduct,deleteProduct,EditProduct } from '../Controller/productController.js'
 import { category,deleteCategory,editCategory,showCategory,oneCategory } from '../Controller/categoryController.js'
+import { editStatus,deleteOrder} from '../Controller/OrderController.js'
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -37,6 +38,10 @@ router.use((req, res, next) => {
 router.post('/AddCategory',category)
 router.delete('/deleteCategory/:id',deleteCategory)
 router.put('/editCategory/:id',editCategory)
+
+// Order Status
+router.put('/editStatus/:id',editStatus)
+router.delete('/deleteOrder/:id',deleteOrder)
 
 // PRODUCT
 router.post('/AddProduct',pro.single('image'),addProduct)

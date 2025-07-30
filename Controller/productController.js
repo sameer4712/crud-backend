@@ -18,7 +18,7 @@ export const addProduct = async (req, res) => {
         image: F
     })
     await product.save()
-    res.json({ message: "Product added succesfully", product: name })
+    res.json({ message: "Product added succesfully", product: product })
 }
 
 // Show All products

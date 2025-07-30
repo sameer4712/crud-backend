@@ -1,6 +1,5 @@
-import { json } from "stream/consumers";
+
 import cartDetails from "../models/CartModel.js";
-import productDetails from "../models/productModel.js";
 import mongoose from "mongoose";
 
 export const addToCart = async (req, res) => {
@@ -160,12 +159,15 @@ export const DeleteCart = async (req, res) => {
     try {
         const { id } = req.session.user
         const userId = id
-        const productId = req.params.id
+        const product = req.params.id
         const ThisCart = await cartDetails.findOne({ userId })
         if (ThisCart) {
             const findIndex = ThisCart.items.findIndex((item) => {
-                return item.productId == productId
+                return item.productId == product
             })
+            if (findIndex === -1) {
+                return res.json({ message: "product not found" })
+            }
             const del = ThisCart.items.splice(findIndex, 1)
             await ThisCart.save()
             res.json({ message: "Product deleted successfully..", deleted: del })
@@ -177,4 +179,5 @@ export const DeleteCart = async (req, res) => {
     catch (err) {
         res.json(err)
     }
+
 }

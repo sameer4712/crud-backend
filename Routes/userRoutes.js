@@ -4,10 +4,11 @@ import path from 'path'
 
 const router = express.Router();
 
-import { register, Login, Logout, EditUser } from '../Controller/userContoller.js'
+import { register, Login, Logout, EditUser,deleteUser } from '../Controller/userContoller.js'
 import { oneCategory,showCategory} from '../Controller/categoryController.js';
 import { showProduct,OneProduct } from '../Controller/productController.js';
 import { addToCart,showCart,EditCart,DeleteCart } from '../Controller/CartController.js';
+import { createOrder,showOrder } from '../Controller/OrderController.js';
 
 
 const storage = multer.diskStorage({
@@ -45,10 +46,14 @@ router.get('/cart',showCart)
 router.put('/editCart/:id',EditCart)
 router.delete('/deleteCart/:id',DeleteCart)
 
+router.post('/Order',createOrder)          
+router.get('/Order',showOrder)          
+
 
 
 // User details 
 router.put('/Edit/:id', upload.single('image'), EditUser)
+router.delete('/deleteMe',deleteUser)
 router.get('/Logout', Logout)
 
 
