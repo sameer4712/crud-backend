@@ -4,7 +4,7 @@ import path from 'path'
 
 const router = express.Router()
 import { adminLogin, adminLogout } from '../Controller/admin.js'
-import { addProduct, deleteProduct, EditProduct } from '../Controller/productController.js'
+import { addProduct, deleteProduct, EditProduct,showProduct } from '../Controller/productController.js'
 import { category, deleteCategory, editCategory, showCategory, oneCategory } from '../Controller/categoryController.js'
 import { editStatus, deleteOrder } from '../Controller/OrderController.js'
 import admin from '../middleware/AdminSession.js'
@@ -37,6 +37,7 @@ router.put('/editCategory/:id', editCategory)
 
 // PRODUCT
 router.post('/AddProduct', pro.single('image'), addProduct)
+router.get('/products',showProduct)
 router.put('/updateProduct/:id', pro.single('image'), EditProduct)
 router.delete('/deleteProduct/:id', deleteProduct)
 router.get('/Logout', adminLogout)

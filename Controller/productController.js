@@ -23,7 +23,7 @@ export const addProduct = async (req, res) => {
 
 // Show All products
 export const showProduct = async (req, res) => {
-    const products = await productDetails.find()
+    const products = await productDetails.find({}, { name: 1, price: 1, category: 1, description: 1, _id: 1, image: 1 })
     res.json(products)
 }
 
@@ -31,7 +31,7 @@ export const showProduct = async (req, res) => {
 export const OneProduct = async (req, res) => {
     try {
         const Id = req.params.id
-        const product = await productDetails.findById({ _id: Id })
+        const product = await productDetails.findById({ _id: Id }, { name: 1, price: 1, category: 1, description: 1, _id: 1, image: 1 })
         res.json({ message: "The searched product is", product: product })
     }
     catch (err) {
@@ -75,8 +75,8 @@ export const EditProduct = async (req, res) => {
         if (req.file) {
             newProduct.image = req.file.filename
         }
-        const updatedProduct = await productDetails.findByIdAndUpdate(id,newProduct)
-        res.json({message:"Updated product is",product:updatedProduct})
+        const updatedProduct = await productDetails.findByIdAndUpdate(id, newProduct)
+        res.json({ message: "Updated product is", product: updatedProduct })
 
     }
     catch (err) {
