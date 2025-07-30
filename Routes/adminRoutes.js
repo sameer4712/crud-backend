@@ -22,6 +22,7 @@ const pro = multer({ storage: storage });
 
 router.post('/login', adminLogin)
 
+// MiddleWare
 router.use(admin)
 
 // CATEGORY
