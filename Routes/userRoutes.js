@@ -9,6 +9,7 @@ import { oneCategory,showCategory} from '../Controller/categoryController.js';
 import { showProduct,OneProduct } from '../Controller/productController.js';
 import { addToCart,showCart,EditCart,DeleteCart } from '../Controller/CartController.js';
 import { createOrder,showOrder } from '../Controller/OrderController.js';
+import user from '../middleware/UserSession.js';
 
 
 const storage = multer.diskStorage({
@@ -31,15 +32,7 @@ router.get('/category/:id',oneCategory)
 router.get('/products',showProduct)
 router.get('/product/:id',OneProduct)
 
-router.use((req, res, next) => {
-    if (req.session.user) {
-        next()
-    }
-    else {
-        res.json({ message: "You are not Logged in" })
-    }
-})
-
+router.use(user)
 // cart and order details 
 router.post('/cart/:id',addToCart)
 router.get('/cart',showCart)

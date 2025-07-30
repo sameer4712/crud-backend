@@ -7,6 +7,7 @@ import { adminLogin, adminLogout } from '../Controller/admin.js'
 import { addProduct,deleteProduct,EditProduct } from '../Controller/productController.js'
 import { category,deleteCategory,editCategory,showCategory,oneCategory } from '../Controller/categoryController.js'
 import { editStatus,deleteOrder} from '../Controller/OrderController.js'
+import admin from '../middleware/AdminSession.js'
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -21,15 +22,7 @@ const pro = multer({ storage: storage });
 
 router.post('/login', adminLogin) 
 
-router.use((req, res, next) => {
-    if (req.session.admin) {
-        next()
-    }
-    else {
-        res.json({ message: "You are not Logged in" })
-    }
-
-})
+router.use(admin)
 
 // CATEGORY
 // router.get('/category',showCategory)
