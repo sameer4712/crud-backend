@@ -23,8 +23,36 @@ export const addProduct = async (req, res) => {
 
 // Show All products
 export const showProduct = async (req, res) => {
-    const products = await productDetails.find({}, { name: 1, price: 1, category: 1, description: 1, _id: 1, image: 1 })
-    res.json(products)
+    try {
+        const product = await productDetails.aggregate([
+            {
+                $lookup: {
+                    from: "categories",
+                    foreignField: "_id",
+                    localField: "category",
+                    as: "categoryDetails"
+                },
+            },
+            {
+                $unwind: "$categoryDetails"
+            },
+            {
+                $project: {
+                    name: 1,
+                    price: 1,
+                    stock: 1,
+                    image: 1,
+                    description: 1,
+                    category: 1,
+                    category: "$categoryDetails.name"
+                }
+            }
+        ])
+        res.json(product)
+    }
+    catch (err) {
+        res.json(err)
+    }
 }
 
 // Show one product
@@ -47,39 +75,26 @@ export const EditProduct = async (req, res) => {
         const id = req.params.id;
         const oldProduct = await productDetails.findById(id)
         if (!oldProduct) {
-            res.json({ message: "There is no such product to edit.." })
+            return res.json({ message: "There is no such product to edit.." })
         }
-        const newProduct = ({
-            name: oldProduct.name,
-            price: oldProduct.price,
-            stock: oldProduct.stock,
-            description: oldProduct.description,
-            category: oldProduct.category,
-            image: oldProduct.image
-        })
-        if (req.body.name) {
-            newProduct.name = req.body.name
+
+        if (!req.body.category || req.body.category == "undefined") delete req.body.category
+
+        const newProduct = {
+            ...oldProduct.toJSON(),
+            ...req.body
         }
-        if (req.body.price) {
-            newProduct.price = req.body.price
-        }
-        if (req.body.name) {
-            newProduct.description = req.body.description
-        }
-        if (req.body.name) {
-            newProduct.stock = req.body.stock
-        }
-        if (req.body.name) {
-            newProduct.category = req.body.category
-        }
+
         if (req.file) {
             newProduct.image = req.file.filename
         }
+
         const updatedProduct = await productDetails.findByIdAndUpdate(id, newProduct)
-        res.json({ message: "Updated product is", product: updatedProduct })
+        res.json({ message: "Updated product is", product: newProduct })
 
     }
     catch (err) {
+        console.log(err)
         res.json({ message: "There is no such product" })
     }
 }

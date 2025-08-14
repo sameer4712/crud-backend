@@ -10,6 +10,7 @@ import { showProduct,OneProduct } from '../Controller/productController.js';
 import { addToCart,showCart,EditCart,DeleteCart } from '../Controller/CartController.js';
 import { createOrder,showOrder } from '../Controller/OrderController.js';
 import user from '../middleware/UserSession.js';
+import { checking } from '../middleware/middleware.js';
 
 
 const storage = multer.diskStorage({

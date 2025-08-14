@@ -19,7 +19,7 @@ export const register = async (req, res) => {
 
     })
     await user.save()
-    res.json({ message: "User registered successfully",user:user })
+    res.json({ message: "User registered successfully", user: user })
 }
 
 // Login a user
@@ -29,6 +29,8 @@ export const Login = async (req, res) => {
 
     try {
         const check = await userDetails.findOne({ email: email })
+
+
         if (!check) {
             res.json({ message: "user not found" })
         }
@@ -50,6 +52,12 @@ export const Login = async (req, res) => {
         console.log(err)
     }
 }
+// Get users
+export const showuser = async (req, res) => {
+    const users = await userDetails.find({}, { name: 1, _id: 1, image: 1, email: 1 })
+    res.json(users)
+}
+
 // Edit user
 export const EditUser = async (req, res) => {
     try {

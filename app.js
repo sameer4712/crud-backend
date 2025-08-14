@@ -5,13 +5,20 @@ import MongoStore from 'connect-mongo'
 import userRoutes from './Routes/userRoutes.js'
 import adminRoutes from './Routes/adminRoutes.js'
 import session from 'express-session'
+import cors from 'cors'
 dotenv.config()
 
 const app = express();
 
 app.use(express.json())
 app.use(express.static("Uploads"))
+app.use(express.static("productImage"))
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cors({
+    origin:" http://localhost:5173",
+    credentials:true
+}))
 
 app.use(session(
     {

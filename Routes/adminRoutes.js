@@ -8,6 +8,7 @@ import { addProduct, deleteProduct, EditProduct,showProduct } from '../Controlle
 import { category, deleteCategory, editCategory, showCategory, oneCategory } from '../Controller/categoryController.js'
 import { editStatus, deleteOrder } from '../Controller/OrderController.js'
 import admin from '../middleware/AdminSession.js'
+import { showuser } from '../Controller/userContoller.js'
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -25,6 +26,8 @@ router.post('/login', adminLogin)
 
 // MiddleWare
 router.use(admin)
+
+router.get('/users', showuser)
 
 // CATEGORY
 router.get('/category', showCategory)
@@ -45,7 +48,10 @@ router.get('/Logout', adminLogout)
 
 // Order Status
 router.put('/editStatus/:id', editStatus)
-router.delete('/deleteOrder/:id', deleteOrder)
+
+
+
+
 
 
 
