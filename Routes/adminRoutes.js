@@ -37,7 +37,6 @@ router.delete('/deleteCategory/:id', deleteCategory)
 router.put('/editCategory/:id', editCategory)
 
 
-
 // PRODUCT
 router.post('/AddProduct', pro.single('image'), addProduct)
 router.get('/products',showProduct)
