@@ -40,7 +40,7 @@ router.get('/cart',showCart)
 router.put('/editCart/:id',EditCart)
 router.delete('/deleteCart/:id',DeleteCart)
 
-router.post('/Order',createOrder)          
+router.post('/CreateOrder',createOrder)          
 router.get('/Order',showOrder)          
 
 

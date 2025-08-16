@@ -65,6 +65,40 @@ export const editStatus = async (req, res) => {
     }
 }
 
+// admin show orders
+export const AdminShowOrder = async (req,res) =>{
+    try{
+        const orders = await OrderDetails.aggregate([
+            {
+                $lookup:{
+                    from:"users",
+                    localField:"userId",
+                    foreignField:"_id",
+                    as:"UserDetails"
+                },
+            },
+            {
+                $unwind:"$UserDetails"
+            },
+            {
+                $project:{
+                    _id:1,
+                    UserName:"$UserDetails.name",
+                    total:1,
+                    items:1,
+                    subtotal:1,
+                    quantity:1,
+                    deliveryStatus:1
+                }
+            }
+        ])
+        res.json(orders)
+    }
+    catch(err){
+        res.json(err)
+    }
+}
+
 
 // Deleting the order
 
