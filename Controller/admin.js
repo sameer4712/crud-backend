@@ -2,7 +2,6 @@
 import bcrypt from 'bcrypt'
 import mongoose from 'mongoose'
 
-
 export const adminLogin = async (req, res) => {
   const { email, password } = req.body
   const data = "mongodb://localhost:27017/MiniEcommerce"
