@@ -3,24 +3,31 @@ import bcrypt from 'bcrypt'
 import mongoose from 'mongoose'
 
 export const adminLogin = async (req, res) => {
-  const { email, password } = req.body
-  const data = "mongodb://localhost:27017/MiniEcommerce"
-  const datas = await mongoose.connect(data)
-  const db = datas.connection.db;
-  let adminFound = await db.collection("admin").findOne({ email: email })
-  console.log(adminFound);
+  try {
+    const { email, password } = req.body
+    const data = "mongodb://localhost:27017/MiniEcommerce"
+    const datas = await mongoose.connect(data)
+    const db = datas.connection.db;
+    let adminFound = await db.collection("admin").findOne({ email: email })
+    // console.log(adminFound);
 
-  if (!adminFound) {
-    res.json({ message: "Email is not matched" })
+    if (!adminFound) {
+      return res.json({ message: "Email is not matched",success: false })
+    }
+    const hashed = await bcrypt.compare(password, adminFound.password)
+    if (!hashed) {
+      return res.json({ message: "Password not matched", success: false })
+    }
+    if (hashed) {
+      req.session.admin = adminFound;
+      return res.json({ message: "You loggedIn as admin", adminFound, success: true })
+    }
   }
-  const hashed = await bcrypt.compare(password, adminFound.password)
-  if (!hashed) {
-    res.json({ message: "password not matched" })
+  catch (error) {
+    console.log(error);
+
   }
-  if (hashed) {
-    req.session.admin = adminFound;
-    res.json({ message: "you loggedIn as admin", adminFound, success: true })
-  }
+
 }
 
 
