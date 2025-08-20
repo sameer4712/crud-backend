@@ -32,11 +32,11 @@ export const Login = async (req, res) => {
 
 
         if (!check) {
-            res.json({ message: "user not found" })
+            res.json({ message: "User not Found" })
         }
         const hashedPass = await bcrypt.compare(password, check.password)
         if (!hashedPass) {
-            res.json({ messge: "email and password is not matching" })
+            res.json({ messge: "Email and Password is not Matching" })
         }
         else {
             req.session.user = {
