@@ -46,7 +46,7 @@ export const createOrder = async (req, res) => {
 // Show the ordered orderss
 export const showOrder = async (req, res) => {
     const id = req.session.user.id
-    const order = await OrderDetails.findOne({ userId: id })
+    const order = await OrderDetails.find({ userId: id })
     res.json({ message: "Your order is ", order })
 }
 
