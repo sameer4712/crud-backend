@@ -4,7 +4,7 @@ import path from 'path'
 
 const router = express.Router();
 
-import { register, Login, Logout, EditUser, deleteUser } from '../Controller/userContoller.js'
+import { register, Login, Logout, EditUser, deleteUser, SessionCheck, GetUser } from '../Controller/userContoller.js'
 import { oneCategory, showCategory } from '../Controller/categoryController.js';
 import { showProduct, OneProduct } from '../Controller/productController.js';
 import { addToCart, showCart, EditCart, DeleteCart } from '../Controller/CartController.js';
@@ -46,6 +46,8 @@ router.get('/Order', showOrder)
 
 
 // User details 
+router.get('/SessionCheck',SessionCheck)
+router.get('/GetUser',GetUser)
 router.put('/Edit/:id', upload.single('image'), EditUser)
 router.delete('/deleteMe', deleteUser)
 router.get('/Logout', Logout)

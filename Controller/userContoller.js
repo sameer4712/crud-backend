@@ -35,14 +35,12 @@ export const Login = async (req, res) => {
 
     try {
         const check = await userDetails.findOne({ email: email })
-
-
         if (!check) {
-            res.json({ message: "User not Found" })
+            return res.json({ message: "User not Found" })
         }
         const hashedPass = await bcrypt.compare(password, check.password)
         if (!hashedPass) {
-            res.json({ messge: "Email and Password is not Matching" })
+            return res.json({ message: "Email and Password is not Matching" })
         }
         else {
             req.session.user = {
@@ -121,3 +119,19 @@ export const Logout = (req, res) => {
         res.json("Failed")
     }
 } 
+
+
+export const SessionCheck = (req,res)=>{
+    if(req.session.user){
+        return res.json({loggedin:true,user:req.session.user})
+    }else{
+        return res.json({loggedin:false,user:null})
+    }
+}
+
+export const GetUser = async (req,res)=>{
+    const userId  = req.session.user.id
+    console.log(userId);
+    const user = await userDetails.findById(userId)
+    res.json(user)
+}
