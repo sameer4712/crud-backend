@@ -5,21 +5,27 @@ import bcrypt from 'bcrypt';
 // Registering A User 
 
 export const register = async (req, res) => {
-    let p = ""
-    if (req.file) {
-        p = req.file.filename
-    }
-    const { name, email, password } = req.body;
-    const hashedPass = await bcrypt.hash(password, 10)
-    const user = new userDetails({
-        name: name,
-        email: email,
-        password: hashedPass,
-        image: p
+    try {
+        let p = ""
+        if (req.file) {
+            p = req.file.filename
+        }
+        const { name, email, password } = req.body;
+        const hashedPass = await bcrypt.hash(password, 10)
+        const user = new userDetails({
+            name: name,
+            email: email,
+            password: hashedPass,
+            image: p
 
-    })
-    await user.save()
-    res.json({ message: "User registered successfully", user: user })
+        })
+        await user.save()
+        res.json({ message: "User registered successfully", user: user, success: true })
+    }
+    catch (err) {
+        console.log(err);
+
+    }
 }
 
 // Login a user
@@ -44,7 +50,7 @@ export const Login = async (req, res) => {
                 name: check.name,
                 email: check.email,
             }
-            res.json({ message: "User Found", User: check, success:true })
+            res.json({ message: "User Found", User: check, success: true })
         }
 
     }
@@ -111,5 +117,7 @@ export const Logout = (req, res) => {
     if (req.session.user == null) {
         res.json("Logout as user")
     }
-    res.json("Failed")
+    else {
+        res.json("Failed")
+    }
 } 
