@@ -6,7 +6,7 @@ const router = express.Router();
 
 import { register, Login, Logout, EditUser, deleteUser, SessionCheck, GetUser } from '../Controller/userContoller.js'
 import { oneCategory, showCategory } from '../Controller/categoryController.js';
-import { showProduct, OneProduct } from '../Controller/productController.js';
+import { showProduct, OneProduct, SearchProduct } from '../Controller/productController.js';
 import { addToCart, showCart, EditCart, DeleteCart } from '../Controller/CartController.js';
 import { createOrder, showOrder } from '../Controller/OrderController.js';
 import user from '../middleware/UserSession.js';
@@ -32,6 +32,7 @@ router.get('/category', showCategory)
 router.get('/category/:id', oneCategory)
 router.get('/products', showProduct)
 router.get('/product/:id', OneProduct)
+router.get('/search/:query',SearchProduct)
 
 router.use(user)
 // cart and order details 
