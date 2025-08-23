@@ -69,6 +69,21 @@ export const OneProduct = async (req, res) => {
 
 }
 
+// search product
+
+export const SearchProduct = async (req, res) => {
+    try {
+        const regex = new RegExp(req.params.query, 'i');
+        const product = await productDetails.find({ name: regex })
+        res.json(product)
+
+    }
+    catch (err) {
+       res.json({message:"Search is failed"})
+
+    }
+}
+
 // Edit A product
 export const EditProduct = async (req, res) => {
     try {
