@@ -1,6 +1,10 @@
 
 import bcrypt from 'bcrypt'
 import mongoose from 'mongoose'
+import productDetails from '../models/productModel.js'
+import OrderDetails from '../models/OrderModel.js'
+import userDetails from '../models/userModel.js'
+import CategoryDetails from '../models/categoryModel.js'
 
 export const adminLogin = async (req, res) => {
   try {
@@ -12,7 +16,7 @@ export const adminLogin = async (req, res) => {
     // console.log(adminFound);
 
     if (!adminFound) {
-      return res.json({ message: "Email is not matched",success: false })
+      return res.json({ message: "Email is not matched", success: false })
     }
     const hashed = await bcrypt.compare(password, adminFound.password)
     if (!hashed) {
@@ -28,6 +32,21 @@ export const adminLogin = async (req, res) => {
 
   }
 
+}
+
+export const DashBoardCount = async (req, res) => {
+  try {
+    const [products, orders, users, categories] = await Promise.all([
+      productDetails.countDocuments(),
+      OrderDetails.countDocuments(),
+      userDetails.countDocuments(),
+      CategoryDetails.countDocuments()
+    ])
+    return res.json({ products, orders, users, categories })
+  }
+  catch (err) {
+    return res.json({ message: err })
+  }
 }
 
 

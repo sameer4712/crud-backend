@@ -38,6 +38,10 @@ export const Login = async (req, res) => {
         if (!check) {
             return res.json({ message: "User not Found" })
         }
+        if(!check.isActive)
+        {
+            return res.json({message:"User is not active"})
+        }
         const hashedPass = await bcrypt.compare(password, check.password)
         if (!hashedPass) {
             return res.json({ message: "Email and Password is not Matching" })
@@ -51,6 +55,7 @@ export const Login = async (req, res) => {
             res.json({ message: "User Found", User: check, success: true })
         }
 
+
     }
     catch (err) {
         console.log(err)
@@ -58,7 +63,7 @@ export const Login = async (req, res) => {
 }
 // Get users
 export const showuser = async (req, res) => {
-    const users = await userDetails.find({}, { name: 1, _id: 1, image: 1, email: 1 })
+    const users = await userDetails.find({}, { password: 0 })
     res.json(users)
 }
 
@@ -118,20 +123,39 @@ export const Logout = (req, res) => {
     else {
         res.json("Failed")
     }
-} 
+}
 
 
-export const SessionCheck = (req,res)=>{
-    if(req.session.user){
-        return res.json({loggedin:true,user:req.session.user})
-    }else{
-        return res.json({loggedin:false,user:null})
+export const SessionCheck = (req, res) => {
+    if (req.session.user) {
+        return res.json({ loggedin: true, user: req.session.user })
+    } else {
+        return res.json({ loggedin: false, user: null })
     }
 }
 
-export const GetUser = async (req,res)=>{
-    const userId  = req.session.user.id
+export const GetUser = async (req, res) => {
+    const userId = req.session.user.id
     console.log(userId);
     const user = await userDetails.findById(userId)
     res.json(user)
+}
+
+export const Active = async (req, res) => {
+    try {
+        const userid = req.params.id
+        console.log(userid);
+        console.log(req.body);
+
+
+        const { Status } = req.body
+        console.log(Status);
+
+        const user = await userDetails.findByIdAndUpdate(userid, { isActive: Status }, { new: true })
+        res.json(user)
+
+    }
+    catch (err) {
+        res.json(err)
+    }
 }

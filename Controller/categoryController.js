@@ -51,9 +51,13 @@ export const editCategory = async (req, res) => {
 export const deleteCategory = async (req, res) => {
     try {
         const categoryId = req.params.id
-        await productDetails.deleteMany({ category: categoryId })
+        const product = await productDetails.findOne({ category: categoryId })
+        if (product) {
+
+           return res.json({ message: "can't delete category", success: false })
+        }
         await CategoryDetails.deleteOne({ _id: categoryId })
-        return res.json({ message: "Category and all the products in the category is deleted succesfully", category: name })
+        return res.json({ message: "Category and all the products in the category is deleted succesfully", category: name, success: true })
     }
     catch (err) {
         res.json({ message: "There is no such category" })

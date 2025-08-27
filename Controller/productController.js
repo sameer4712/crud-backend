@@ -1,4 +1,5 @@
 import productDetails from "../models/productModel.js";
+import userDetails from "../models/userModel.js";
 import { category } from "./categoryController.js";
 
 // Add product
@@ -24,6 +25,7 @@ export const addProduct = async (req, res) => {
 // Show All products
 export const showProduct = async (req, res) => {
     try {
+
         const product = await productDetails.aggregate([
             {
                 $lookup: {
@@ -79,7 +81,7 @@ export const SearchProduct = async (req, res) => {
 
     }
     catch (err) {
-       res.json({message:"Search is failed"})
+        res.json({ message: "Search is failed" })
 
     }
 }
@@ -127,3 +129,47 @@ export const deleteProduct = async (req, res) => {
 
 
 }
+
+export const PageRouting = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 3;
+        const skip = (page - 1) * limit;
+
+        const prod = await productDetails.aggregate([
+            { $skip: skip },
+            { $limit: limit },
+            {
+                $lookup: {
+                    from: "categories",     
+                    localField: "category",
+                    foreignField: "_id",  
+                    as: "category",
+                },
+            },
+            { $unwind: "$category" },
+            {
+                $project: {
+                    name: 1,
+                    price: 1,
+                    image: 1,
+                    stock: 1,
+                    description: 1,
+                    category: "$category.name",
+                },
+            },
+        ]);
+
+        const total = await productDetails.countDocuments();
+
+        res.json({
+            prod,
+            totalPages: Math.ceil(total / limit),
+            currentPage: page,
+            totalProducts: total,
+        });
+    } catch (error) {
+        console.error(error);
+        res.json({ error: "Failed to fetch products" });
+    }
+};
