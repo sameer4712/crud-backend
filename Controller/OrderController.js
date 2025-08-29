@@ -66,35 +66,39 @@ export const editStatus = async (req, res) => {
 }
 
 // admin show orders
-export const AdminShowOrder = async (req,res) =>{
-    try{
+export const AdminShowOrder = async (req, res) => {
+    try {
         const orders = await OrderDetails.aggregate([
             {
-                $lookup:{
-                    from:"users",
-                    localField:"userId",
-                    foreignField:"_id",
-                    as:"UserDetails"
+                $lookup: {
+                    from: "users",
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "UserDetails"
                 },
             },
             {
-                $unwind:"$UserDetails"
+                $unwind: "$UserDetails"
             },
             {
-                $project:{
-                    _id:1,
-                    UserName:"$UserDetails.name",
-                    total:1,
-                    items:1,
-                    subtotal:1,
-                    quantity:1,
-                    deliveryStatus:1
+                $project: {
+                    _id: 1,
+                    UserName: "$UserDetails.name",
+                    total: 1,
+                    items: 1,
+                    subtotal: 1,
+                    quantity: 1,
+                    deliveryStatus: 1,
+                    createdAt: 1
                 }
+            },
+            {
+                $sort: { createdAt: -1 }
             }
         ])
         res.json(orders)
     }
-    catch(err){
+    catch (err) {
         res.json(err)
     }
 }
@@ -102,13 +106,13 @@ export const AdminShowOrder = async (req,res) =>{
 
 // Deleting the order
 
-export const deleteOrder = async (req,res)=>{
-    try{
+export const deleteOrder = async (req, res) => {
+    try {
         const id = req.params.id;
         const del = await OrderDetails.deleteOne(id)
-        return res.json({message:"This order has been deleted..",del})
+        return res.json({ message: "This order has been deleted..", del })
     }
-    catch(err){
+    catch (err) {
         return res.json(err)
     }
 }
