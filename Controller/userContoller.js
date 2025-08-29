@@ -151,7 +151,7 @@ export const Active = async (req, res) => {
         const { Status } = req.body
         console.log(Status);
 
-        const user = await userDetails.findByIdAndUpdate(userid, { isActive: Status }, { new: true })
+        const user = await userDetails.findByIdAndUpdate(userid, { isActive: Status })
         res.json(user)
 
     }
