@@ -49,7 +49,6 @@ export const DashBoardCount = async (req, res) => {
   }
 }
 
-
 export const adminLogout = (req, res) => {
   req.session.admin = null
   if (req.session.admin == null) {

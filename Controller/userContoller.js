@@ -153,7 +153,6 @@ export const Active = async (req, res) => {
 
         const user = await userDetails.findByIdAndUpdate(userid, { isActive: Status })
         res.json(user)
-
     }
     catch (err) {
         res.json(err)
