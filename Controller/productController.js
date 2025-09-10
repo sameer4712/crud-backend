@@ -130,6 +130,7 @@ export const deleteProduct = async (req, res) => {
 
 }
 
+
 export const PageRouting = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
