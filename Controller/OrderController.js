@@ -103,7 +103,6 @@ export const AdminShowOrder = async (req, res) => {
     }
 }
 
-
 // Deleting the order
 
 export const deleteOrder = async (req, res) => {
