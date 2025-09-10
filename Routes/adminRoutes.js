@@ -45,7 +45,6 @@ router.post('/Logout', adminLogout)
 
 router.get('/products', PageRouting)
 
-
 // Order Status
 router.get('/Order', AdminShowOrder)
 router.put('/editStatus/:id', editStatus)
