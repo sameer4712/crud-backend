@@ -46,8 +46,11 @@ app.use("/user", userRoutes)
 app.use("/admin", adminRoutes)
 
 mongoose.connect(process.env.dburi).then(() => {
-    app.listen((process.env.port), () => {
-        console.log("connected");
+    console.log('database connected');
 
-    })
+})
+
+app.listen((process.env.port), () => {
+    console.log('server started');
+
 })
