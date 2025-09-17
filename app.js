@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({
     origin: [
         " http://localhost:5173",
-        " http://3.110.193.205:5173"
+        " http://3.110.193.205"
 
     ],
     credentials: true
@@ -42,8 +42,8 @@ app.use((req, res, next) => {
 })
 
 
-app.use("/user", userRoutes)
-app.use("/admin", adminRoutes)
+app.use("/api/user", userRoutes)
+app.use("/api/admin", adminRoutes)
 
 mongoose.connect(process.env.dburi).then(() => {
     console.log('database connected');
