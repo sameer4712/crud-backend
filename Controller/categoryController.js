@@ -47,6 +47,7 @@ export const editCategory = async (req, res) => {
     res.json({ message: "Category updated Successfull", category: updatedCategory })
 }
 
+
 // Delete category
 export const deleteCategory = async (req, res) => {
     try {
